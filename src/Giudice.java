@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Giudice extends Thread {
-    private static int numero; // non usato, ma mantenuto
+    private static int numero; 
     private static ArrayList<Atleta> Atleti = new ArrayList<>();
     private static ArrayList<Atleta> Podio = new ArrayList<>();
 
