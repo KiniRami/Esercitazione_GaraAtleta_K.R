@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 
 public class Giudice extends Thread {
-    private static int numero; // non usato, ma mantenuto
+    private static int numero;
     private static ArrayList<Atleta> Atleti = new ArrayList<>();
     private static ArrayList<Atleta> Podio = new ArrayList<>();
+    private static GestioneFile gf = new GestioneFile();
 
-    private Giudice() {}
+
 
     public static void aggiungimi(Atleta a) {
         Atleti.add(a);
@@ -15,6 +16,7 @@ public class Giudice extends Thread {
         Podio.add(a);
         if (Podio.size() == Atleti.size()) {
             fineGara();
+
         }
     }
 
@@ -23,6 +25,9 @@ public class Giudice extends Thread {
         System.out.println("Primo in classifica: " + Podio.get(0).nome);
         System.out.println("Secondo in classifica: " + Podio.get(1).nome);
         System.out.println("Terzo in classifica: " + Podio.get(2).nome);
+        gf.scrivifile(Podio);
+        gf.leggifile();
+
     }
 
     public static void avviaGara() {
@@ -41,4 +46,5 @@ public class Giudice extends Thread {
             new Thread(a).start();
         }
     }
+
 }
