@@ -10,7 +10,7 @@ public class Main {
             numAtleti = input.nextInt();
         }
 
-        Giudice gara = new Giudice(100); // gara fissa a 100 metri
+        Giudice gara = new Giudice(100); 
         input.nextLine();
 
         for (int i = 1; i <= numAtleti; i++) {
