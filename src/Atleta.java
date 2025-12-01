@@ -1,7 +1,6 @@
 import java.util.Random;
 
 public class Atleta implements Runnable {
-    // TUTTI PUBLIC, come richiesto
     public Giudice giudice;
     public String nome;
     public double metri;
@@ -27,7 +26,7 @@ public class Atleta implements Runnable {
         this.metri = 0;
         this.secondi = 0;
 
-        // Inizializza anomalie (solo la probabilità iniziale)
+        //anomalie
         this.scarpaSlacciata = false;
         this.follaEsulta = false;
         this.ventoContrario = false;
@@ -42,7 +41,7 @@ public class Atleta implements Runnable {
         final double DISTANZA = 100.0;
 
         while (metri < DISTANZA) {
-            // --- Possibile attivazione di anomalie (una sola volta per tipo) ---
+            
             if (!scarpaSlacciata && rand.nextInt(100) < 10) {
                 scarpaSlacciata = true;
                 secondiFermo = rand.nextBoolean() ? 1 : 2;
@@ -63,7 +62,7 @@ public class Atleta implements Runnable {
                 System.out.println(nome + " affronta vento contrario! Avanza a fatica.");
             }
 
-            // --- Gestione stato anomalie ---
+         //gestione di anomalie
             double avanzamento = 0;
 
             if (scarpaSlacciata) {
@@ -81,13 +80,13 @@ public class Atleta implements Runnable {
                 ventoContrario = false; // finisce dopo questo secondo
             } else if (follaEsulta) {
                 contatoreFolla++;
-                avanzamento = rand.nextDouble(3, 4); // più lento
+                avanzamento = rand.nextDouble(3, 4); 
                 if (contatoreFolla >= secondiFolla) {
                     follaEsulta = false;
                     System.out.println(nome + " si concentra di nuovo!");
                 }
             } else {
-                // normale
+                
                 avanzamento = rand.nextDouble(5, 8);
             }
 
@@ -97,7 +96,7 @@ public class Atleta implements Runnable {
                 System.out.printf("%s - Metri: %.2f\n", nome, metri);
             }
 
-            // Attendi 1 secondo reale
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
