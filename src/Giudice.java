@@ -1,50 +1,57 @@
-import java.util.ArrayList;
+import java.util.*;
 
-public class Giudice extends Thread {
-    private static int numero;
-    private static ArrayList<Atleta> Atleti = new ArrayList<>();
-    private static ArrayList<Atleta> Podio = new ArrayList<>();
-    private static GestioneFile gf = new GestioneFile();
+public class Giudice {
+    public List<Atleta> iscritti = new ArrayList<>();
+    public List<Atleta> classifica = new ArrayList<>();
+    public double distanza;
+    public GestioneFile gestore = new GestioneFile();
 
-
-
-    public static void aggiungimi(Atleta a) {
-        Atleti.add(a);
+    public Giudice(double distanza) {
+        this.distanza = distanza;
     }
 
-    public static void finito(Atleta a) {
-        Podio.add(a);
-        if (Podio.size() == Atleti.size()) {
-            fineGara();
+    public double getDistanza() {
+        return distanza;
+    }
 
+    public void registra(Atleta a) {
+        iscritti.add(a);
+    }
+
+    public void avvia() {
+        for (int i = 3; i >= 1; i--) {
+            System.out.println("Partenza in: " + i);
+            try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+        System.out.println("");
+
+        List<Thread> threads = new ArrayList<>();
+        for (Atleta a : iscritti) {
+            Thread t = new Thread(a);
+            threads.add(t);
+            t.start();
+        }
+
+        for (Thread t : threads) {
+            try { t.join(); } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
 
-    public static void fineGara() {
-        System.out.println("Gara Terminata! Ecco il Podio:");
-        System.out.println("Primo in classifica: " + Podio.get(0).nome);
-        System.out.println("Secondo in classifica: " + Podio.get(1).nome);
-        System.out.println("Terzo in classifica: " + Podio.get(2).nome);
-        gf.scrivifile(Podio);
-        gf.leggifile();
-
-    }
-
-    public static void avviaGara() {
-        for (int i = 3; i > 0; i--) {
-            System.out.println("Inizio in " + i);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println("Errore sleep");
-            }
-        }
-
-        System.out.println("VIA!!!");
-
-        for (Atleta a : Atleti) {
-            new Thread(a).start();
+    public synchronized void garaFinita(Atleta a) {
+        classifica.add(a);
+        if (classifica.size() == iscritti.size()) {
+            terminaGara();
         }
     }
 
+    public void terminaGara() {
+        StringBuilder testo = new StringBuilder("gara terminata\n");
+        for (int i = 0; i < classifica.size(); i++) {
+            testo.append((i + 1) + "° posto: ").append(classifica.get(i).nome).append("\n");
+        }
+        System.out.println(testo.toString());
+
+        gestore.scriviFile(testo.toString());
+        System.out.println("Podio salvato nel file.");
+    }
 }
