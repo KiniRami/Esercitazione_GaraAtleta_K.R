@@ -1,13 +1,25 @@
-public class Main {
+import java.util.Scanner;
+
+public class GaraAtletica {
     public static void main(String[] args) {
-        System.out.println("Gara Atletica");
+        Scanner input = new Scanner(System.in);
 
-        new Atleta(47, "Chask(B)");
-        new Atleta(68, "VOLPIIIII!(N)");
-        new Atleta(59, "IL_CUTO(P)");
+        int numAtleti = 0;
+        while (numAtleti < 3) {
+            System.out.print("Quanti atleti vuoi registrare? (almeno 3): ");
+            numAtleti = input.nextInt();
+        }
 
+        Giudice gara = new Giudice(100); // gara fissa a 100 metri
+        input.nextLine();
 
-        Giudice.avviaGara();
+        for (int i = 1; i <= numAtleti; i++) {
+            System.out.print("Inserisci il nome dell'atleta " + i + ": ");
+            String nome = input.nextLine();
+            Atleta corridore = new Atleta(nome, i, gara);
+            gara.registra(corridore);
+        }
 
+        gara.avvia();
     }
 }
